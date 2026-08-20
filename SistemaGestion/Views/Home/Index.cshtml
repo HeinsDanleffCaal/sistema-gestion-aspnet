@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+<h2 class="mb-4">Panel principal</h2>
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card card-resumen shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Productos activos</h6>
+                <h2>@ViewBag.TotalProductos</h2>
+                <a asp-controller="Productos" asp-action="Index" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-resumen shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Clientes</h6>
+                <h2>@ViewBag.TotalClientes</h2>
+                <a asp-controller="Clientes" asp-action="Index" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-resumen shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Pedidos registrados</h6>
+                <h2>@ViewBag.TotalPedidos</h2>
+                <a asp-controller="Pedidos" asp-action="Index" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+</div>

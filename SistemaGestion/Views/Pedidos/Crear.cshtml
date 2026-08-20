@@ -1,0 +1,87 @@
+@model PedidoCrearViewModel
+@{
+    ViewData["Title"] = "Nuevo pedido";
+    var clientes = (IEnumerable<Cliente>)ViewBag.Clientes;
+    var productos = (IEnumerable<Producto>)ViewBag.Productos;
+}
+<h2>Nuevo pedido</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Crear" method="post" id="formPedido">
+    <div class="row g-3 mb-4" style="max-width: 500px;">
+        <div class="col-12">
+            <label class="form-label">Cliente</label>
+            <select name="ClienteId" class="form-select" required>
+                <option value="">-- Selecciona un cliente --</option>
+                @foreach (var cliente in clientes)
+                {
+                    <option value="@cliente.Id">@cliente.Nombre</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <h5>Productos del pedido</h5>
+    <table class="table" id="tablaDetalle">
+        <thead>
+            <tr>
+                <th style="width: 55%">Producto</th>
+                <th style="width: 25%">Cantidad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="fila-detalle">
+                <td>
+                    <select name="Detalles[0].ProductoId" class="form-select">
+                        @foreach (var producto in productos)
+                        {
+                            <option value="@producto.Id">@producto.Nombre (stock: @producto.Stock) - Q@producto.Precio.ToString("N2")</option>
+                        }
+                    </select>
+                </td>
+                <td><input type="number" name="Detalles[0].Cantidad" class="form-control" min="0" value="0" /></td>
+                <td><button type="button" class="btn btn-outline-danger btn-sm btn-quitar-fila">Quitar</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" id="btnAgregarFila" class="btn btn-outline-primary btn-sm mb-3">+ Agregar producto</button>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Registrar pedido</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+<script>
+    // Plantilla de las opciones de producto (se reutiliza en cada fila nueva)
+    const opcionesProductos = document.querySelector('.fila-detalle select').innerHTML;
+    let contadorFilas = 1;
+
+    document.getElementById('btnAgregarFila').addEventListener('click', function () {
+        const tbody = document.querySelector('#tablaDetalle tbody');
+        const fila = document.createElement('tr');
+        fila.className = 'fila-detalle';
+        fila.innerHTML = `
+            <td>
+                <select name="Detalles[${contadorFilas}].ProductoId" class="form-select">${opcionesProductos}</select>
+            </td>
+            <td><input type="number" name="Detalles[${contadorFilas}].Cantidad" class="form-control" min="0" value="0" /></td>
+            <td><button type="button" class="btn btn-outline-danger btn-sm btn-quitar-fila">Quitar</button></td>
+        `;
+        tbody.appendChild(fila);
+        contadorFilas++;
+    });
+
+    document.getElementById('tablaDetalle').addEventListener('click', function (e) {
+        if (e.target.classList.contains('btn-quitar-fila')) {
+            const filas = document.querySelectorAll('.fila-detalle');
+            if (filas.length > 1) {
+                e.target.closest('tr').remove();
+            }
+        }
+    });
+</script>
+}

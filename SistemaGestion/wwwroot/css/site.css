@@ -1,0 +1,12 @@
+body {
+  min-height: 100vh;
+}
+
+.footer {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.card-resumen {
+  border-left: 4px solid #0d6efd;
+}
