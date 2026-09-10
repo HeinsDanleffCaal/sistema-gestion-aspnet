@@ -37,12 +37,19 @@ public class UsuarioService : IUsuarioService
     }
 
     public async Task<IEnumerable<Usuario>> ListarAsync()
+{
+    using var conexion = _connectionFactory.CrearConexion();
+    var usuarios = (await conexion.QueryAsync<Usuario>(
+        "sp_Usuario_Listar",
+        commandType: System.Data.CommandType.StoredProcedure)).ToList();
+
+    foreach (var usuario in usuarios)
     {
-        using var conexion = _connectionFactory.CrearConexion();
-        return await conexion.QueryAsync<Usuario>(
-            "sp_Usuario_Listar",
-            commandType: System.Data.CommandType.StoredProcedure);
+        usuario.Roles = await ObtenerRolesAsync(usuario.Id);
     }
+
+    return usuarios;
+}
 
     public async Task<int> CrearAsync(Usuario usuario, int rolId)
     {
