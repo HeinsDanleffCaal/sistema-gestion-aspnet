@@ -29,7 +29,7 @@
         <tr>
             <td>@producto.Nombre</td>
             <td>@producto.Descripcion</td>
-            <td class="text-end">Q@producto.Precio.ToString("N2")</td>
+            <td class="text-end">Q(@producto.Precio.ToString("N2"))</td>
             <td class="text-end">
                 @if (producto.Stock <= 5)
                 {
