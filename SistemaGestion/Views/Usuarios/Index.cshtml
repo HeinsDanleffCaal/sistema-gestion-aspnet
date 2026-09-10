@@ -24,7 +24,7 @@
             <td>@usuario.NombreUsuario</td>
             <td>@usuario.NombreCompleto</td>
             <td>@usuario.Email</td>
-            <td>@usuario.Roles</td>
+            <td>@string.Join(", ", usuario.Roles)</td>
             <td>
                 @if (usuario.Activo)
                 {
